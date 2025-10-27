@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <title>Index</title>
+  </head>
+  <body>
+    <div class="container" style="margin-top:1rem;">
+      <h1>Inventory App - Mihai Baiasu</h1>
+      <div class="container view-products-btn-container" style="margin:1rem;">
+        <a href="/product"><button class="btn btn-fill btn-success">view all products</button></a>
+      </div>
+      <div class="container-fluid">
+        <h3>Our most recent products</h3>
+        <div class="most-recent-container container d-flex" style="gap:1rem;">
+          <div class="row row-cols-auto" style="gap: 1rem;">
+            <% topProducts.forEach(function(product) { %>
+              <div class="card text-center" style="width: 18rem; padding-left:0; padding-right:0;">
+                <div class="card-body">
+                  <h5 class="card-title"><b>Product Name: </b><%= product.name %></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    Price: <%= product.price %>
+                  </h6>
+                  <div class="card-text"><%= product.description %></div>
+                  
+                </div>
+                <div class="card-footer" style="width: 100%;">
+                  <a href="/product/details/<%=product.id%>" class="btn btn-primary">View Product</a>
+                  <a href="/product/edit/<%=product.id%>" class="btn btn-success">Edit Product</a>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
