@@ -16,8 +16,23 @@ async function createProduct(productDetails){
     return null;
 }
 
+async function getFormMetadata(id){
+    let dataObj = {}
+    if(id){
+        dataObj.productDetails = await db.getProductById(id)
+    }
+    dataObj.categories = await db.getAllCategories();
+    dataObj.warehouses = await db.getAllWarehouses();
+    return dataObj;
+}
+
 async function getProductDetails(id){
     const productDetails = await db.getProductById(id);
+    const categories = await db.getAllCategories();
+    const warehouses = await db.getAllWarehouses();
+    const returnObj = {
+        productDetails, categories, warehouses
+    }
     return productDetails;
 }
 
@@ -77,5 +92,6 @@ module.exports = {
     getProductsForPage,
     createProduct,
     getProductSearchPage,
-    updateProduct
+    updateProduct,
+    getFormMetadata
 };

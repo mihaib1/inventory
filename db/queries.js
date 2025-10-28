@@ -7,7 +7,7 @@ async function getAllProducts() {
 
 async function getMostRecentProducts(count){
     if(!count || count == null || count == 0) count = 10;
-    const { rows } = await pool.query("SELECT * FROM product ORDER BY creation_date DESC LIMIT $1;", [count]);
+    const { rows } = await pool.query("SELECT * FROM product ORDER BY id DESC LIMIT $1;", [count]);
     return rows;
 }
 
@@ -40,12 +40,7 @@ async function getProductsBySearchTerm(searchTerm){
         throw("No searchTerm");
     } 
         
-}
-
-async function getProductsByCategory(categoryId) {
-    const { rows } = await pool.query("SELECT * FROM products WHERE category_id = $1;", [categoryId]);
-    return rows;
-}
+};
 
 async function getAllCategories() {
     const { rows } = await pool.query("SELECT * FROM category;");
@@ -96,6 +91,39 @@ async function updateProduct(productDetails){
     return null;
 }
 
+async function getAllCategories(){
+    const SQL = `SELECT id, name from category;`;
+    const { rows } = await pool.query(SQL);
+    return rows;
+}
+
+async function insertCategory(categoryData){
+    const SQL = `INSERT INTO category (name) VALUES($1) RETURNING id`;
+    const insertedCategory = await pool.query(SQL, [categoryData.name]);
+    return insertedCategory;
+}
+
+async function associateCategoryToProduct(dataObj){
+    const SQL = `UPDATE product SET category_id = $1 WHERE id = $2`
+    if(dataObj.productId && dataObj.categoryId){
+        await pool.query(SQL, [dataObj.productId, dataObj.categoryId]);
+        return null;
+    }
+    return "Could not find productId or categoryId!";
+}
+
+async function getAllWarehouses(){
+    const SQL = `SELECT * from warehouse`;
+    const { rows } = await pool.query(SQL);
+    return rows;
+}
+
+async function getProductsByCategory(categoryId){
+    const SQL = `SELECT * from product INNER JOIN category ON product.category_id = category.id WHERE category.id = $1`;
+    const { rows } = await pool.query(SQL, [categoryId]);
+    return rows;
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
@@ -108,5 +136,8 @@ module.exports = {
     getManufacturerById,
     getWarehousesList,
     insertProduct,
-    updateProduct
+    updateProduct,
+    getAllCategories,
+    insertCategory,
+    getAllWarehouses
 }
