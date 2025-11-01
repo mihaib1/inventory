@@ -1,5 +1,17 @@
 const pool = require("./pool");
 
+class CategoryOperations {
+    async update(details){
+        const SQL = `UPDATE category SET name = $2 
+                    WHERE id = $1`
+        if(details.id){
+            await pool.query(SQL, [details.id, details.name]);
+            return true;
+        } 
+        return false;
+    }
+}
+
 async function getAllProducts() {
     const { rows } = await pool.query("SELECT * FROM product");
     return rows;
@@ -38,8 +50,7 @@ async function getProductsBySearchTerm(searchTerm){
         return rows;
     } else{
         throw("No searchTerm");
-    } 
-        
+    }    
 };
 
 async function getAllCategories() {
@@ -100,7 +111,7 @@ async function getAllCategories(){
 async function insertCategory(categoryData){
     const SQL = `INSERT INTO category (name) VALUES($1) RETURNING id`;
     const insertedCategory = await pool.query(SQL, [categoryData.name]);
-    return insertedCategory;
+    return insertedCategory.rows[0];
 }
 
 async function associateCategoryToProduct(dataObj){
@@ -124,6 +135,24 @@ async function getProductsByCategory(categoryId){
     return rows;
 }
 
+async function getAssociatedProductsToCategoryCount(categoryId){
+    const SQL = `SELECT COUNT(*) FROM product WHERE category_id = $1`;
+    const { rows } = await pool.query(SQL, [categoryId]);
+    return rows;
+}
+
+async function getCategoryById(categoryId){
+    const SQL = `SELECT * FROM category WHERE id = $1`;
+    const { rows } = await pool.query(SQL, [categoryId]);
+    return rows
+}
+
+async function deleteCategoryById(categoryId){
+    const SQL = `DELETE FROM category WHERE id = $1`;
+    await pool.query(SQL, [categoryId]);
+    return true;
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
@@ -139,5 +168,9 @@ module.exports = {
     updateProduct,
     getAllCategories,
     insertCategory,
-    getAllWarehouses
+    getAllWarehouses,
+    getCategoryById,
+    deleteCategoryById,
+    getAssociatedProductsToCategoryCount,
+    CategoryOperations
 }

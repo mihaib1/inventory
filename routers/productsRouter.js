@@ -52,14 +52,6 @@ productsRouter.get("/edit/:id", (req, res) => {
     .catch((err) => {
         console.log("catch case for GET /edit/:id -> for error handling");
     })
-    /*const productDetails = productsController.getProductDetails(req.params.id);
-    productDetails.then(result => {
-        const formObject = {
-            product: result[0],
-            isEdit: true
-        };
-        res.render("insertProduct", {formObject})
-    }) */
 });
 
 productsRouter.get("/details/:id", (req, res) => {

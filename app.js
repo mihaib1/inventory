@@ -3,6 +3,7 @@ const PORT = process.env.PORT ? process.env.PORT : 3000;
 
 const indexRouter = require("./routers/indexRouter");
 const productsRouter = require("./routers/productsRouter");
+const categoryRouter = require("./routers/categoryRouter");
 const path = require("node:path");
 const express = require("express");
 const app = express();
@@ -18,6 +19,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use("/", indexRouter);
 app.use("/product", productsRouter);
+app.use("/category", categoryRouter);
 
 app.listen(PORT, function(err){
     if(err){

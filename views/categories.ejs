@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <title>Categories</title>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('status')) {
+            window.history.replaceState(null, '', window.location.pathname);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container" style="margin-top:1.5em;">
+        <h3>Categories</h3>
+        <div class="container">
+            <a href="/"><button class="btn btn-fill btn-primary">Home</button></a>
+            <a href="/category/create"><button class="btn btn-fill btn-primary">Create new category</button></a>
+        </div>
+        <% if(categories.length> 0) {%>
+        <div class="container-fluid mx-auto" style="padding:1em; ">
+            <ul class="list-group">
+                <% categories.forEach((category)=> { %>
+                    <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" id="<%=category.id%>" >
+                        <%= category.name %> 
+                        <div class="buttons container">
+                            <a href="/category/delete/<%=category.id%>">
+                                <span class="badge badge-primary badge-pill deleteBtn float-md-end ms-1" style="background-color:red; cursor: pointer;">X</span>
+                            </a>
+                            <div></div>
+                            <a href="/category/edit/<%=category.id%>">
+                                <span class="badge badge-primary badge-pill deleteBtn float-md-end" style="background-color: #007bff; cursor: pointer;">Edit</span>
+                            </a>
+                        </div>
+
+                    </li>
+                <% }) %>
+            </ul>
+        </div>
+        <% } %>
+    </div>
+    
+
+        <% if(status === 'fail'){ %>
+            <div class="container">There has been an error when deleting category!</div>
+        <% } %>
+        <% if(status === "removedSuccessfully") { %>
+            <div class="container">Removed category successfully!</div>
+        <% } %>
+
+</body>
+
+</html>

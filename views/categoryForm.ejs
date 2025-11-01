@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <title>Category Form</title>
+</head>
+<body>
+    <div class="container" style="margin-top:2.5em;">
+        <h3>Category Form</h3>
+        <form class="form-inline" action="<% locals.isEdit == false ? '/category/create' : 'category/edit/:id' %>" method="POST">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="name">Category Name: </label>
+                        <input type="text" id="name" name="name" value="<%= (locals.isEdit && locals.category.name) || '' %>">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-success btn-md">Submit</button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</body>
+</html>
